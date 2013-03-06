@@ -1,17 +1,17 @@
 These guidelines build on Apple's existing [Coding Guidelines for Cocoa](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html).
-Unless explicitly contradicted below, assume that all of Apple's guidelines apply as well.
+Unless explicitly contradicted below, assume that all of Apple's guidelines apply as well. They
+have also been adapted from [GitHub's objective-c-guidelines](https://github.com/github/objective-c-guidelines).
 
 ## Whitespace
 
- * Tabs, not spaces.
+ * Spaces, not tabs.
  * End files with a newline.
  * Make liberal use of vertical whitespace to divide code into logical chunks.
 
 ## Documentation and Organization
 
- * All method declarations should be documented.
- * Comments should be hard-wrapped at 80 characters.
- * Comments should be [Tomdoc](http://tomdoc.org/)-style.
+ * All public method declarations should be documented.
+ * Comments should be [Appledoc](https://github.com/tomaz/appledoc/)-style.
  * Use `#pragma mark`s to categorize methods into functional groupings and protocol implementations, following this general structure:
 
 ```objc
@@ -38,11 +38,11 @@ Unless explicitly contradicted below, assume that all of Apple's guidelines appl
 
 #pragma mark NSCopying
 
-- (id)copyWithZone:(NSZone *)zone {}
+- (id)copyWithZone:(NSZone*)zone {}
 
 #pragma mark NSObject
 
-- (NSString *)description {}
+- (NSString*)description {}
 ```
 
 ## Declarations
@@ -56,10 +56,16 @@ Unless explicitly contradicted below, assume that all of Apple's guidelines appl
  * Don't use `@synthesize` unless the compiler requires it. Note that optional properties in protocols must be explicitly synthesized in order to exist.
  * Instance variables should be prefixed with an underscore (just like when implicitly synthesized).
  * Don't put a space between an object type and the protocol it conforms to.
- 
+
 ```objc
 @property (attributes) id<Protocol> object;
-@property (nonatomic, strong) NSObject<Protocol> *object;
+@property (nonatomic, strong) NSObject<Protocol>* object;
+```
+
+ * Don't put a space between the type declaration and the variable name.
+
+```objc
+NSString* myString;
 ```
  
  * C function declarations should have no space before the opening parenthesis, and should be namespaced just like a class.
@@ -78,20 +84,20 @@ void GHAwesomeFunction(BOOL hasSomeArgs);
 ## Expressions
 
  * Don't access an ivar unless you're in `-init`, `-dealloc` or a custom accessor.
- * Use dot-syntax when invoking idempotent methods, including setters and class methods (like `NSFileManager.defaultManager`).
+ * Use dot-syntax when invoking only declared properties.
  * Use object literals, boxed expressions, and subscripting over the older, grosser alternatives.
  * Comparisons should be explicit for everything except `BOOL`s.
  * Prefer positive comparisons to negative.
  * Long form ternary operators should be wrapped in parentheses and only used for assignment and arguments.
 
 ```objc
-Blah *a = (stuff == thing ? foo : bar);
+Blah* a = (stuff == thing ? foo : bar);
 ```
 
 * Short form, `nil` coalescing ternary operators should avoid parentheses.
 
 ```objc
-Blah *b = thingThatCouldBeNil ?: defaultValue;
+Blah* b = thingThatCouldBeNil ?: defaultValue;
 ```
 
  * There shouldn't be a space between a cast and the variable being cast.
@@ -102,24 +108,27 @@ NewType a = (NewType)b;
 
 ## Control Structures
 
- * Always surround `if` bodies with curly braces if there is an `else`. Single-line `if` bodies without an `else` should be on the same line as the `if`. 
- * All curly braces should begin on the same line as their associated statement. They should end on a new line.
- * Put a single space after keywords and before their parentheses.
+ * All curly braces should begin on the line following their associated statement. They should end on a new line.
+ * Do not put a single space after keywords or before their parentheses.
  * Return and break early.
  * No spaces between parentheses and their contents.
 
 ```objc
-if (shitIsBad) return;
+if(shitIsBad) return;
 
-if (something == nil) {
+if(something == nil)
+{
 	// do stuff
-} else {
+}
+else
+{
 	// do other stuff
 }
 ```
 
 ## Blocks
 
+ * Block curly braces should begin on the same line as their associated expression.
  * Blocks should have a space between their return type and name.
  * Block definitions should omit their return type when possible.
  * Block definitions should omit their arguments if they are `void`.
@@ -142,21 +151,21 @@ id (^blockName2)(id) = ^ id (id args) {
  * Dictionary literals should have no space between the key and the colon, and a single space between colon and value.
 
 ``` objc
-NSArray *theShit = @[ @1, @2, @3 ];
+NSArray* theShit = @[ @1, @2, @3 ];
 
-NSDictionary *keyedShit = @{ GHDidCreateStyleGuide: @YES };
+NSDictionary* keyedShit = @{ GHDidCreateStyleGuide: @YES };
 ```
 
  * Longer or more complex literals should be split over multiple lines (optionally with a terminating comma):
 
 ``` objc
-NSArray *theShit = @[
+NSArray* theShit = @[
     @"Got some long string objects in here.",
     [AndSomeModelObjects too],
     @"Moar strings."
 ];
 
-NSDictionary *keyedShit = @{
+NSDictionary* keyedShit = @{
     @"this.key": @"corresponds to this value",
     @"otherKey": @"remoteData.payload",
     @"some": @"more",
